@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RootNamespace>NET.W._2018.Krasovskaya._05</RootNamespace>
+  </PropertyGroup>
+
+</Project>
