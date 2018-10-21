@@ -36,7 +36,7 @@ namespace Polynom
 
             if (_coefs == null)
             {
-                _coefs = new [] { coefs[0] };
+                _coefs = new[] { coefs[0] };
             }
 
         }
@@ -47,6 +47,16 @@ namespace Polynom
 
         public static Polynomial operator +(Polynomial p1, Polynomial p2)
         {
+            if (p1 == null)
+            {
+                throw new ArgumentNullException(nameof(p1));
+            }
+
+            if (p2 == null)
+            {
+                throw new ArgumentNullException(nameof(p2));
+            }
+
             int min = Math.Min(p1._coefs.Length, p2._coefs.Length);
 
             int max = Math.Max(p1._coefs.Length, p2._coefs.Length);
@@ -69,6 +79,16 @@ namespace Polynom
 
         public static Polynomial operator -(Polynomial p1, Polynomial p2)
         {
+            if (p1 == null)
+            {
+                throw new ArgumentNullException(nameof(p1));
+            }
+
+            if (p2 == null)
+            {
+                throw new ArgumentNullException(nameof(p2));
+            }
+
             int min = Math.Min(p1._coefs.Length, p2._coefs.Length);
 
             int max = Math.Max(p1._coefs.Length, p2._coefs.Length);
@@ -91,6 +111,11 @@ namespace Polynom
 
         public static Polynomial operator -(Polynomial p)
         {
+            if (p == null)
+            {
+                throw new ArgumentNullException(nameof(p));
+            }
+
             double[] coefs = new double[p._coefs.Length];
 
             for (int i = 0; i < p._coefs.Length; i++)
@@ -103,6 +128,16 @@ namespace Polynom
 
         public static Polynomial operator *(Polynomial p1, Polynomial p2)
         {
+            if (p1 == null)
+            {
+                throw new ArgumentNullException(nameof(p1));
+            }
+
+            if (p2 == null)
+            {
+                throw new ArgumentNullException(nameof(p2));
+            }
+
             double[] coefs = new double[p1._coefs.Length + p2._coefs.Length - 1];
 
             for (int i = 0; i < p1._coefs.Length; i++)
@@ -118,11 +153,16 @@ namespace Polynom
 
         public static Polynomial operator *(Polynomial p, double c)
         {
+            if (p == null)
+            {
+                throw new ArgumentNullException(nameof(p));
+            }
+
             double[] coefs = new double[p._coefs.Length];
 
             for (int i = 0; i < p._coefs.Length; i++)
             {
-                coefs[i] = c*p._coefs[i];
+                coefs[i] = c * p._coefs[i];
             }
 
             return new Polynomial(coefs);
