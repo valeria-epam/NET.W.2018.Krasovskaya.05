@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace BubbleSort
@@ -6,34 +7,43 @@ namespace BubbleSort
     public static class Sort
     {
         /// <summary>
-        /// Sorts the <paramref name="array"/> by row sum.
+        /// Sorts the <paramref name="array"/> by the row property returned by <paramref name="selector"/>.
         /// </summary>
-        /// <param name="array">The array to sort.</param>
-        /// <param name="descending">If <see langword="true" /> the array will be sorted in the descending order.</param>
-        public static void BubbleSortByRowSum(this int[][] array, bool descending)
+        /// <typeparam name="T">The type of the row property.</typeparam>
+        public static void BubbleSortByRowProperty<T>(this int[][] array, Func<int[], T> selector, Func<T, T, int> comparer)
         {
             if (array == null)
             {
                 throw new ArgumentNullException(nameof(array));
             }
 
-            long[] sums= new long[array.Length];
+            T[] props = new T[array.Length];
             for (int i = 0; i < array.Length; i++)
             {
-                sums[i] = array[i].Sum(t => (long)t);
+                props[i] = selector(array[i]);
             }
 
-            for (int i = 0; i < sums.Length - 1; i++)
+            for (int i = 0; i < props.Length - 1; i++)
             {
-                for (int j = i + 1; j < sums.Length; j++)
+                for (int j = i + 1; j < props.Length; j++)
                 {
-                    if ((sums[i] > sums[j]) ^ descending)
+                    if (comparer(props[i], props[j]) > 0)
                     {
-                        Swap(ref sums[i], ref sums[j]);
+                        Swap(ref props[i], ref props[j]);
                         Swap(ref array[i], ref array[j]);
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Sorts the <paramref name="array"/> by row sum.
+        /// </summary>
+        /// <param name="array">The array to sort.</param>
+        /// <param name="descending">If <see langword="true" /> the array will be sorted in the descending order.</param>
+        public static void BubbleSortByRowSum(this int[][] array, bool descending)
+        {
+            array.BubbleSortByRowProperty(row => row.Sum(x => (long)x), (x, y) => descending ? y.CompareTo(x) : x.CompareTo(y));
         }
 
         /// <summary>
@@ -43,28 +53,7 @@ namespace BubbleSort
         /// <param name="descending">If <see langword="true" /> the array will be sorted in the descending order.</param>
         public static void BubbleSortByMaxRowElement(this int[][] array, bool descending)
         {
-            if (array == null)
-            {
-                throw new ArgumentNullException(nameof(array));
-            }
-
-            int[] maximum = new int[array.Length];
-            for (int i = 0; i < array.Length; i++)
-            {
-                maximum[i] = array[i].Max();
-            }
-
-            for (int i = 0; i < maximum.Length - 1; i++)
-            {
-                for (int j = i + 1; j < maximum.Length; j++)
-                {
-                    if ((maximum[i] > maximum[j]) ^ descending)
-                    {
-                        Swap(ref maximum[i], ref maximum[j]);
-                        Swap(ref array[i], ref array[j]);
-                    }
-                }
-            }
+            array.BubbleSortByRowProperty(row => row.Max(), (x, y) => descending ? y.CompareTo(x) : x.CompareTo(y));
         }
 
         /// <summary>
@@ -74,28 +63,47 @@ namespace BubbleSort
         /// <param name="descending">If <see langword="true" /> the array will be sorted in the descending order.</param>
         public static void BubbleSortByMinRowElement(this int[][] array, bool descending)
         {
+            array.BubbleSortByRowProperty(row => row.Min(), (x, y) => descending ? y.CompareTo(x) : x.CompareTo(y));
+        }
+
+        /// <summary>
+        /// Sorts the <paramref name="array"/> using the <paramref name="comparer"/> to compare elements.
+        /// </summary>
+        public static void BubbleSort(this int[][] array, IComparer<int[]> comparer)
+        {
             if (array == null)
             {
                 throw new ArgumentNullException(nameof(array));
             }
 
-            int[] minimum = new int[array.Length];
-            for (int i = 0; i < array.Length; i++)
+            if (comparer == null)
             {
-                minimum[i] = array[i].Min();
+                throw new ArgumentNullException(nameof(comparer));
             }
 
-            for (int i = 0; i < minimum.Length - 1; i++)
+            for (int i = 0; i < array.Length - 1; i++)
             {
-                for (int j = i + 1; j < minimum.Length; j++)
+                for (int j = i + 1; j < array.Length; j++)
                 {
-                    if ((minimum[i] > minimum[j]) ^ descending)
+                    if (comparer.Compare(array[i], array[j]) > 0)
                     {
-                        Swap(ref minimum[i], ref minimum[j]);
                         Swap(ref array[i], ref array[j]);
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Sorts the <paramref name="array"/> using the <paramref name="compare"/> delegate to compare elements.
+        /// </summary>
+        public static void BubbleSort(this int[][] array, Func<int[], int[], int> compare)
+        {
+            if (compare == null)
+            {
+                throw new ArgumentNullException(nameof(compare));
+            }
+
+            array.BubbleSort(new DelegateComparer(compare));
         }
 
         private static void Swap<T>(ref T item1, ref T item2)

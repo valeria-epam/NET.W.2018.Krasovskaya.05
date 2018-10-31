@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BubbleSort", "BubbleSort\BubbleSort.csproj", "{9AFAC068-46BF-4C47-9EC6-99960A2D49B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BubbleSort", "BubbleSort\BubbleSort.csproj", "{9AFAC068-46BF-4C47-9EC6-99960A2D49B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sort.Tests", "Sort.Tests\Sort.Tests.csproj", "{BAD598C0-2416-4E78-A00B-712D88E0EFF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sort.Tests", "Sort.Tests\Sort.Tests.csproj", "{BAD598C0-2416-4E78-A00B-712D88E0EFF0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Polynom", "Polynom\Polynom.csproj", "{7D781D4C-3D92-4C98-96BC-9F7B695C27C7}"
 EndProject

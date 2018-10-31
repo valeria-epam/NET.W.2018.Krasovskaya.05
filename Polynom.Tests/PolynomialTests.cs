@@ -1,5 +1,4 @@
-﻿
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace Polynom.Tests
 {
@@ -67,7 +66,7 @@ namespace Polynom.Tests
         public void Coefs()
         {
             var polynom1 = new Polynomial(4, 2, -1, 5);
-            var expected = new double[]{ 4, 2, -1, 5 };
+            var expected = new double[] { 4, 2, -1, 5 };
             Assert.AreEqual(expected, polynom1.Coefs);
         }
 

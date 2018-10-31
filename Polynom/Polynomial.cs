@@ -38,7 +38,6 @@ namespace Polynom
             {
                 _coefs = new[] { coefs[0] };
             }
-
         }
 
         public IReadOnlyList<double> Coefs => _coefs;
@@ -74,6 +73,7 @@ namespace Polynom
                     coefs[i] = p1._coefs.Length > p2._coefs.Length ? p1._coefs[i] : p2._coefs[i];
                 }
             }
+
             return new Polynomial(coefs);
         }
 
@@ -106,6 +106,7 @@ namespace Polynom
                     coefs[i] = p1._coefs.Length > p2._coefs.Length ? p1._coefs[i] : -p2._coefs[i];
                 }
             }
+
             return new Polynomial(coefs);
         }
 
@@ -178,20 +179,49 @@ namespace Polynom
 
         public static Polynomial Multiply(Polynomial p1, double c) => p1 * c;
 
+        public static bool operator ==(Polynomial left, Polynomial right)
+        {
+            return object.Equals(left, right);
+        }
+
+        public static bool operator !=(Polynomial left, Polynomial right)
+        {
+            return !object.Equals(left, right);
+        }
 
         public bool Equals(Polynomial other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return _coefs.SequenceEqual(other._coefs);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Polynomial)obj);
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            return this.Equals((Polynomial)obj);
         }
 
         public override int GetHashCode()
@@ -201,26 +231,19 @@ namespace Polynom
                 int hashCode = 0;
                 foreach (var coef in _coefs)
                 {
-                    hashCode = 31 * hashCode + coef.GetHashCode();
+                    hashCode = (31 * hashCode) + coef.GetHashCode();
                 }
+
                 return hashCode;
             }
         }
 
-        public static bool operator ==(Polynomial left, Polynomial right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(Polynomial left, Polynomial right)
-        {
-            return !Equals(left, right);
-        }
-
-        public override string ToString()
+       public override string ToString()
         {
             if (_coefs.Length == 1)
+            {
                 return _coefs[0].ToString();
+            }
 
             StringBuilder builder = new StringBuilder();
 
