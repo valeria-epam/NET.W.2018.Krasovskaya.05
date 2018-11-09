@@ -46,6 +46,9 @@ namespace BubbleSort
             BubbleSort(array, comparer.Compare);
         }
 
+        /// <summary>
+        /// Swaps the specified <paramref name="item1"/> to <paramref name="item2"/>.
+        /// </summary>
         private static void Swap<T>(ref T item1, ref T item2)
         {
             T item = item1;
